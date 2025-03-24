@@ -10,7 +10,6 @@ jobs:
   test:
     runs-on: ubuntu-latest
     steps:
-
       - name: "Checkout"
         uses: actions/checkout@v4
       
@@ -33,13 +32,11 @@ jobs:
       - name: Run tests
         run: echo "test"
           
-      -  name: Verify server
-         if: success()
-         run: |
+      - name: Verify server
+        if: success()
+        run: |
           cd myproject
-     
           python manage.py runserver > server.log 2>&1 &
-
           sleep 10
           if curl -sL http://localhost:8000/ | grep -q "Django"; then
             echo "Server verification passed"
@@ -48,4 +45,4 @@ jobs:
             cat server.log
             exit 1
           fi
-
+          kill $!
